@@ -190,22 +190,22 @@ public class FPrincipal extends javax.swing.JFrame {
             JDInfantes di = new JDInfantes(this, true);
             di.obtenerConexion(cnx);
             di.setVisible(true);
-
+            cnx.entablar(Infante.todos, TQuery);
         } else if (BEducadores.isSelected()) {
             JDEducador di = new JDEducador(this, true);
             di.obtenerConexion(cnx);
             di.setVisible(true);
-
+            cnx.entablar(Educador.todos, TQuery);
         } else if (BResponsables.isSelected()) {
             JDResponsable di = new JDResponsable(this, true);
             di.obtenerConexion(cnx);
             di.setVisible(true);
-
+            cnx.entablar(Responsable.todos, TQuery);
         } else if (BBitacora.isSelected()) {
             JDBitacora di = new JDBitacora(this, true);
             di.obtenerConexion(cnx);
             di.setVisible(true);
-
+            cnx.entablar(Bitacora.todos, TQuery);
         }
     }//GEN-LAST:event_BNuevoActionPerformed
 
@@ -220,25 +220,25 @@ public class FPrincipal extends javax.swing.JFrame {
             di.obtenerConexion(cnx);
             di.obtenerInfante(crearInfante());
             di.setVisible(true);
-
+            cnx.entablar(Infante.todos, TQuery);
         } else if (BEducadores.isSelected()) {
             JDEducador di = new JDEducador(this, true);
             di.obtenerConexion(cnx);
             di.obtenerEducador(crearEducador());
             di.setVisible(true);
-
+            cnx.entablar(Educador.todos, TQuery);
         } else if (BResponsables.isSelected()) {
             JDResponsable di = new JDResponsable(this, true);
             di.obtenerConexion(cnx);
             di.obtenerResponsable(crearResponsable());
             di.setVisible(true);
-
+            cnx.entablar(Responsable.todos, TQuery);
         } else if (BBitacora.isSelected()) {
             JDBitacora di = new JDBitacora(this, true);
             di.obtenerConexion(cnx);
             di.obtenerBitacora(crearBitacora());
             di.setVisible(true);
-
+            cnx.entablar(Bitacora.todos, TQuery);
         }
     }//GEN-LAST:event_BeditarActionPerformed
 
@@ -365,4 +365,7 @@ public class FPrincipal extends javax.swing.JFrame {
         }
         return Bit;
     }
+    
+    
+    
 }
