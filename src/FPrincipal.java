@@ -1,5 +1,7 @@
 
+import javax.swing.DefaultButtonModel;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -40,12 +42,14 @@ public class FPrincipal extends javax.swing.JFrame {
         BResponsables = new javax.swing.JToggleButton();
         BBitacora = new javax.swing.JToggleButton();
         BNuevo = new javax.swing.JButton();
+        Beditar = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         TQuery = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jToolBar1.setBackground(new java.awt.Color(0, 51, 153));
         jToolBar1.setRollover(true);
 
         buttonGroup1.add(BInfantes);
@@ -107,6 +111,17 @@ public class FPrincipal extends javax.swing.JFrame {
             }
         });
         jToolBar1.add(BNuevo);
+
+        Beditar.setText("Editar");
+        Beditar.setFocusable(false);
+        Beditar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        Beditar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        Beditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BeditarActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(Beditar);
 
         jPanel1.setBackground(new java.awt.Color(0, 51, 102));
 
@@ -173,15 +188,13 @@ public class FPrincipal extends javax.swing.JFrame {
     private void BNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BNuevoActionPerformed
         if (BInfantes.isSelected()) {
             JDInfantes di = new JDInfantes(this, true);
-            di.obtenerConexion(cnx); 
+            di.obtenerConexion(cnx);
             di.setVisible(true);
-            
 
         } else if (BEducadores.isSelected()) {
             JDEducador di = new JDEducador(this, true);
             di.obtenerConexion(cnx);
             di.setVisible(true);
-            
 
         } else if (BResponsables.isSelected()) {
             JDResponsable di = new JDResponsable(this, true);
@@ -195,6 +208,39 @@ public class FPrincipal extends javax.swing.JFrame {
 
         }
     }//GEN-LAST:event_BNuevoActionPerformed
+
+    private void BeditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BeditarActionPerformed
+        if (TQuery.getSelectedRow()<0) {
+            JOptionPane.showConfirmDialog(this, "Primero selecciona un renglon de la tabla para editar.");
+            return;
+        } 
+        
+        if (BInfantes.isSelected()) {
+            JDInfantes di = new JDInfantes(this, true);
+            di.obtenerConexion(cnx);
+            di.obtenerInfante(crearInfante());
+            di.setVisible(true);
+
+        } else if (BEducadores.isSelected()) {
+            JDEducador di = new JDEducador(this, true);
+            di.obtenerConexion(cnx);
+            di.obtenerEducador(crearEducador());
+            di.setVisible(true);
+
+        } else if (BResponsables.isSelected()) {
+            JDResponsable di = new JDResponsable(this, true);
+            di.obtenerConexion(cnx);
+            di.obtenerResponsable(crearResponsable());
+            di.setVisible(true);
+
+        } else if (BBitacora.isSelected()) {
+            JDBitacora di = new JDBitacora(this, true);
+            di.obtenerConexion(cnx);
+            di.obtenerBitacora(crearBitacora());
+            di.setVisible(true);
+
+        }
+    }//GEN-LAST:event_BeditarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -237,6 +283,7 @@ public class FPrincipal extends javax.swing.JFrame {
     private javax.swing.JToggleButton BInfantes;
     private javax.swing.JButton BNuevo;
     private javax.swing.JToggleButton BResponsables;
+    private javax.swing.JButton Beditar;
     private javax.swing.JTable TQuery;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JPanel jPanel1;
@@ -244,7 +291,78 @@ public class FPrincipal extends javax.swing.JFrame {
     private javax.swing.JToolBar jToolBar1;
     // End of variables declaration//GEN-END:variables
 
-    private Conexion Conexion() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public Infante crearInfante() {
+        DefaultTableModel modelo = (DefaultTableModel) TQuery.getModel();
+        int ren = TQuery.getSelectedRow();
+        Infante kid = new Infante();
+
+        if (ren >= 0) {
+            kid.curp = modelo.getValueAt(ren, 0).toString();
+            kid.nombre = modelo.getValueAt(ren, 1).toString();
+            kid.sexo = modelo.getValueAt(ren, 2).toString();
+            kid.fecha = modelo.getValueAt(ren, 3).toString();
+            kid.estado = modelo.getValueAt(ren, 4).toString();
+
+        } else {
+            JOptionPane.showConfirmDialog(this, "Selrcciona un reglon de la tabla.");
+        }
+        return kid;
+    }
+    
+    public Responsable crearResponsable() {
+        DefaultTableModel modelo = (DefaultTableModel) TQuery.getModel();
+        int ren = TQuery.getSelectedRow();
+        Responsable res = new Responsable();
+
+        if (ren >= 0) {
+            res.curp = modelo.getValueAt(ren, 0).toString();
+            res.nombre = modelo.getValueAt(ren, 1).toString();
+            res.sexo = modelo.getValueAt(ren, 2).toString();
+            res.telefono = modelo.getValueAt(ren, 3).toString();
+            res.parentesco = modelo.getValueAt(ren, 4).toString();
+            res.estado = modelo.getValueAt(ren, 5).toString();
+
+        } else {
+            JOptionPane.showConfirmDialog(this, "Selrcciona un reglon de la tabla.");
+        }
+        return res;
+    }
+    public Educador crearEducador() {
+        DefaultTableModel modelo = (DefaultTableModel) TQuery.getModel();
+        int ren = TQuery.getSelectedRow();
+        Educador edu = new Educador();
+
+        if (ren >= 0) {
+            edu.curp = modelo.getValueAt(ren, 0).toString();
+            edu.nombre = modelo.getValueAt(ren, 1).toString();
+            edu.sexo = modelo.getValueAt(ren, 2).toString();
+            edu.telefono = modelo.getValueAt(ren, 3).toString();
+            edu.direccion = modelo.getValueAt(ren, 4).toString();
+            edu.estado = modelo.getValueAt(ren, 5).toString();
+
+        } else {
+            JOptionPane.showConfirmDialog(this, "Selrcciona un reglon de la tabla.");
+        }
+        return edu;
+    }
+    public Bitacora crearBitacora() {
+        DefaultTableModel modelo = (DefaultTableModel) TQuery.getModel();
+        int ren = TQuery.getSelectedRow();
+        Bitacora Bit = new Bitacora();
+
+        if (ren >= 0) {
+            Bit.folio = modelo.getValueAt(ren, 0).toString();
+            Bit.tiempo = modelo.getValueAt(ren, 1).toString();
+            Bit.tipo = modelo.getValueAt(ren, 2).toString();
+            Bit.observaciones = modelo.getValueAt(ren, 3).toString();
+            Bit.curpi = modelo.getValueAt(ren, 4).toString();
+            Bit.curpr = modelo.getValueAt(ren, 5).toString();
+            Bit.curpe = modelo.getValueAt(ren, 6).toString();
+            
+
+        } else {
+            JOptionPane.showConfirmDialog(this, "Selrcciona un reglon de la tabla.");
+        }
+        return Bit;
     }
 }

@@ -1,6 +1,9 @@
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /*
@@ -31,6 +34,18 @@ public class JDBitacora extends javax.swing.JDialog {
         cnx.seleccionar(Responsable.curps, CbxRes);
         cnx.seleccionar(Educador.curps, Cbxedu);
     }
+    
+    public void obtenerBitacora(Bitacora bit){
+       
+            Lfolio.setText(bit.folio);
+            Lfecha.setText(bit.tiempo);
+            Cbxtipo.setSelectedItem(bit.tipo);
+            TxtAobsevacion.setText(bit.observaciones);
+            CbxInfante.setSelectedItem(bit.curpi);
+            CbxRes.setSelectedItem(bit.curpr);
+            Cbxedu.setSelectedItem(bit.curpe);
+    }
+         
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -61,7 +76,7 @@ public class JDBitacora extends javax.swing.JDialog {
         BCancelar = new javax.swing.JButton();
         Bborrar = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        Bhoy = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -103,18 +118,33 @@ public class JDBitacora extends javax.swing.JDialog {
         });
 
         Bactuali.setText("ACTUALIZAR");
+        Bactuali.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BactualiActionPerformed(evt);
+            }
+        });
 
         BCancelar.setText("CANCELAR");
+        BCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BCancelarActionPerformed(evt);
+            }
+        });
 
         Bborrar.setText("BORRAR");
+        Bborrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BborrarActionPerformed(evt);
+            }
+        });
 
         jLabel10.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         jLabel10.setText("DATOS DE BITACORA");
 
-        jButton1.setText("hoy");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        Bhoy.setText("hoy");
+        Bhoy.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                BhoyActionPerformed(evt);
             }
         });
 
@@ -153,7 +183,7 @@ public class JDBitacora extends javax.swing.JDialog {
                                     .addComponent(Lfolio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(Lfecha, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(Bhoy, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(Cbxtipo, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -172,10 +202,11 @@ public class JDBitacora extends javax.swing.JDialog {
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 21, Short.MAX_VALUE)
                     .addComponent(Lfolio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jButton1)
-                    .addComponent(Lfecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Lfecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel2)
+                        .addComponent(Bhoy)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -230,11 +261,54 @@ public class JDBitacora extends javax.swing.JDialog {
         
     }//GEN-LAST:event_BregistrarActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        SimpleDateFormat s = new SimpleDateFormat("YYYY-MM-DD HH:ss");
+    private void BhoyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BhoyActionPerformed
+        SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd HH:ss");
         Lfecha.setText(s.format(new Date()));
         
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_BhoyActionPerformed
+
+    private void BactualiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BactualiActionPerformed
+        Bitacora bit = new Bitacora(
+                null,
+                Lfecha.getText(),
+                Cbxtipo.getSelectedItem().toString(),
+                TxtAobsevacion.getText(),
+                CbxInfante.getSelectedItem().toString(),
+                CbxRes.getSelectedItem().toString(),
+                Cbxedu.getSelectedItem().toString()   
+        );
+        
+        if (bit.actualizar(cnx.con)==1) {
+            JOptionPane.showMessageDialog(this, "Datos de bitacora actualizada");
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "No se pudo actualizar");
+        } 
+        
+    }//GEN-LAST:event_BactualiActionPerformed
+
+    private void BborrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BborrarActionPerformed
+        Bitacora bit = new Bitacora(
+                null,
+                Lfecha.getText(),
+                Cbxtipo.getSelectedItem().toString(),
+                TxtAobsevacion.getText(),
+                CbxInfante.getSelectedItem().toString(),
+                CbxRes.getSelectedItem().toString(),
+                Cbxedu.getSelectedItem().toString()   
+        );
+        
+        if (bit.borrar(cnx.con)==1) {
+            JOptionPane.showMessageDialog(this, "Datos de bitacora borrados");
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "No se pudo borrar");
+        } 
+    }//GEN-LAST:event_BborrarActionPerformed
+
+    private void BCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BCancelarActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_BCancelarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -282,6 +356,7 @@ public class JDBitacora extends javax.swing.JDialog {
     private javax.swing.JButton BCancelar;
     private javax.swing.JButton Bactuali;
     private javax.swing.JButton Bborrar;
+    private javax.swing.JButton Bhoy;
     private javax.swing.JButton Bregistrar;
     private javax.swing.JComboBox<String> CbxInfante;
     private javax.swing.JComboBox<String> CbxRes;
@@ -290,7 +365,6 @@ public class JDBitacora extends javax.swing.JDialog {
     private javax.swing.JLabel Lfecha;
     private javax.swing.JLabel Lfolio;
     private javax.swing.JTextArea TxtAobsevacion;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;

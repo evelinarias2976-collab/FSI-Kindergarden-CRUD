@@ -1,4 +1,8 @@
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /*
@@ -23,6 +27,14 @@ public class JDEducador extends javax.swing.JDialog {
         this. cnx = cnx;
     }
 
+    public void obtenerEducador(Educador edu){
+        TxtCurp.setText(edu.curp);
+        TxtNombre.setText(edu.nombre);
+        CbxSexo.setSelectedItem(edu.sexo);
+        TxtTelefono.setText(edu.telefono);
+        TxtDireccion.setText(edu.direccion);
+        cbxEstado.setSelectedItem(edu.estado);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -63,6 +75,11 @@ public class JDEducador extends javax.swing.JDialog {
         });
 
         Bborrar.setText("BORRAR");
+        Bborrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BborrarActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Curp:");
 
@@ -76,6 +93,11 @@ public class JDEducador extends javax.swing.JDialog {
         jLabel2.setText("Nombre:");
 
         Bcancelar.setText("CANCELAR");
+        Bcancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BcancelarActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("Sexo:");
 
@@ -90,11 +112,6 @@ public class JDEducador extends javax.swing.JDialog {
         jLabel6.setText("Dirreción:");
 
         CbxSexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Masculino", "Femenino", "No Binario", "Avion Apache" }));
-        CbxSexo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CbxSexoActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -147,7 +164,6 @@ public class JDEducador extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(9, 9, 9)
@@ -207,17 +223,47 @@ public class JDEducador extends javax.swing.JDialog {
         } else {
             JOptionPane.showMessageDialog(this, "No se pudo registrar.");
         }
-        
-        
     }//GEN-LAST:event_BregistrarActionPerformed
 
     private void BactualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BactualizarActionPerformed
-        // TODO add your handling code here:
+        Educador edu = new Educador(
+                 TxtCurp.getText(),
+                TxtNombre.getText(),
+                CbxSexo.getSelectedItem().toString(),
+                TxtTelefono.getText(),
+                TxtDireccion.getText(),
+                cbxEstado.getSelectedItem().toString()
+        );
+        
+        if (edu.actualizar(cnx.con)==1) {
+            JOptionPane.showMessageDialog(this, "Datos de educador actualizado");
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "No se pudo actualizar");
+        }
     }//GEN-LAST:event_BactualizarActionPerformed
 
-    private void CbxSexoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CbxSexoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_CbxSexoActionPerformed
+    private void BborrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BborrarActionPerformed
+        Educador edu = new Educador(
+                 TxtCurp.getText(),
+                TxtNombre.getText(),
+                CbxSexo.getSelectedItem().toString(),
+                TxtTelefono.getText(),
+                TxtDireccion.getText(),
+                cbxEstado.getSelectedItem().toString()
+        );
+        
+        if (edu.borrar(cnx.con)==1) {
+            JOptionPane.showMessageDialog(this, "Datos de educador borrados");
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "No se pudo borrar");
+        }
+    }//GEN-LAST:event_BborrarActionPerformed
+
+    private void BcancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BcancelarActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_BcancelarActionPerformed
 
     /**
      * @param args the command line arguments

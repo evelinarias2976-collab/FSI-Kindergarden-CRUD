@@ -1,4 +1,8 @@
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /*
@@ -25,6 +29,15 @@ public class JDResponsable extends javax.swing.JDialog {
     public void obtenerConexion(Conexion cnx){
         this. cnx = cnx;
     }
+    
+    public void obtenerResponsable(Responsable res){
+            TxtCurp.setText(res.curp);
+            TxtNombre.setText(res.nombre);
+            CbxSexo.setSelectedItem(res.sexo);
+            TxtTelefono.setText(res.estado);
+            TxtParentesco.setText(res.parentesco);
+            CbxEstado.setSelectedItem(res.estado);
+        } 
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -58,6 +71,11 @@ public class JDResponsable extends javax.swing.JDialog {
         jLabel2.setText("Nombre:");
 
         Bcancelar.setText("CANCELAR");
+        Bcancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BcancelarActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("Sexo:");
 
@@ -83,6 +101,11 @@ public class JDResponsable extends javax.swing.JDialog {
         });
 
         Bborrar.setText("BORRAR");
+        Bborrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BborrarActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Curp:");
 
@@ -200,8 +223,48 @@ public class JDResponsable extends javax.swing.JDialog {
     }//GEN-LAST:event_BregistrarActionPerformed
 
     private void BactializarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BactializarActionPerformed
-        // TODO add your handling code here:
+        Responsable res = new Responsable(
+                TxtCurp.getText(),
+             TxtNombre.getText(),
+             CbxSexo.getSelectedItem().toString(),
+             TxtTelefono.getText(),
+             TxtParentesco.getText(),
+             CbxEstado.getSelectedItem().toString()
+        );
+        
+        if (res.actualizar(cnx.con)==1) {
+            JOptionPane.showMessageDialog(this, "Datos de responsable actualizado");
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "No se pudo actualizar");
+        }
+        
+        
     }//GEN-LAST:event_BactializarActionPerformed
+
+    private void BborrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BborrarActionPerformed
+        Responsable res = new Responsable(
+                TxtCurp.getText(),
+             TxtNombre.getText(),
+             CbxSexo.getSelectedItem().toString(),
+             TxtTelefono.getText(),
+             TxtParentesco.getText(),
+             CbxEstado.getSelectedItem().toString()
+        );
+        
+        if (res.borrar(cnx.con)==1) {
+            JOptionPane.showMessageDialog(this, "Datos de responsable borrados");
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "No se pudo borrar");
+        }
+        
+        
+    }//GEN-LAST:event_BborrarActionPerformed
+
+    private void BcancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BcancelarActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_BcancelarActionPerformed
 
     /**
      * @param args the command line arguments

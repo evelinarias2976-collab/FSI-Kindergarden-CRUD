@@ -1,6 +1,9 @@
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /*
@@ -24,6 +27,21 @@ public class JDInfantes extends javax.swing.JDialog {
     
     public void obtenerConexion(Conexion cnx){
         this. cnx = cnx;
+    }
+    
+    public void obtenerInfante(Infante kid){
+        
+        try {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:ss");
+            
+            TxCurp.setText(kid.curp);
+            TxNombre.setText(kid.nombre);
+            CboSexo.setSelectedItem(kid.sexo);
+            Sfecha.setValue(format.parse(kid.fecha));
+            CboEstado.setSelectedItem(kid.estado);
+        } catch (ParseException ex) {
+            Logger.getLogger(JDInfantes.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -80,10 +98,25 @@ public class JDInfantes extends javax.swing.JDialog {
         });
 
         Bactualizar.setText("ACTUALIZAR");
+        Bactualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BactualizarActionPerformed(evt);
+            }
+        });
 
         Bcancelar.setText("CANCELAR");
+        Bcancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BcancelarActionPerformed(evt);
+            }
+        });
 
         Bborrar.setText("BORRAR");
+        Bborrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BborrarActionPerformed(evt);
+            }
+        });
 
         jLabel10.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         jLabel10.setText("DATOS DE INFANTE");
@@ -162,7 +195,7 @@ public class JDInfantes extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BregistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BregistrarActionPerformed
-        SimpleDateFormat S = new SimpleDateFormat("YYYY-MM-DD HH:ss");
+        SimpleDateFormat S = new SimpleDateFormat("yyyy-MM-dd HH:ss");
         Infante kid = new Infante(
                 TxCurp.getText(),
                 TxNombre.getText(),
@@ -180,6 +213,48 @@ public class JDInfantes extends javax.swing.JDialog {
         }
         
     }//GEN-LAST:event_BregistrarActionPerformed
+
+    private void BactualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BactualizarActionPerformed
+       SimpleDateFormat S = new SimpleDateFormat("yyyy-MM-dd HH:ss");
+        Infante kid = new Infante(
+                TxCurp.getText(),
+                TxNombre.getText(),
+                CboSexo.getSelectedItem().toString(),
+                S.format((Date)Sfecha.getValue()),
+                CboEstado.getSelectedItem().toString()
+        ); 
+        
+        
+        if (kid.actualizar(cnx.con)==1) {
+            JOptionPane.showMessageDialog(this, "Datos de infante actualizados");
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "No se pudo actualizar");
+        }
+    }//GEN-LAST:event_BactualizarActionPerformed
+
+    private void BborrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BborrarActionPerformed
+        SimpleDateFormat S = new SimpleDateFormat("yyyy-MM-dd HH:ss");
+        Infante kid = new Infante(
+                TxCurp.getText(),
+                TxNombre.getText(),
+                CboSexo.getSelectedItem().toString(),
+                S.format((Date)Sfecha.getValue()),
+                CboEstado.getSelectedItem().toString()
+        ); 
+        
+        
+        if (kid.borrar(cnx.con)==1) {
+            JOptionPane.showMessageDialog(this, "Datos de infante borrados");
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "No se pudo borrar");
+        }
+    }//GEN-LAST:event_BborrarActionPerformed
+
+    private void BcancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BcancelarActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_BcancelarActionPerformed
 
     /**
      * @param args the command line arguments
