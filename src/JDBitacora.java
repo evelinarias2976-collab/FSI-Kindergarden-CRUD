@@ -289,7 +289,7 @@ public class JDBitacora extends javax.swing.JDialog {
 
     private void BborrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BborrarActionPerformed
         Bitacora bit = new Bitacora(
-                null,
+                Lfolio.getText(),
                 Lfecha.getText(),
                 Cbxtipo.getSelectedItem().toString(),
                 TxtAobsevacion.getText(),

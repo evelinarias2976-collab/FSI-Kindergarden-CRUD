@@ -7,7 +7,7 @@ import java.sql.*;
 public class Infante {
     
     static String todos = "SELECT * FROM infantes ORDER BY nombrei";
-    static String curps = "SELECT curpi FROM infantes ORDER BY curpi";
+    static String curps = "SELECT curp FROM infantes ORDER BY curp";
     
     String curp, nombre, sexo, fecha, estado;
     

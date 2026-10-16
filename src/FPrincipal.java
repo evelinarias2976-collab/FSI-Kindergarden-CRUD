@@ -341,7 +341,7 @@ public class FPrincipal extends javax.swing.JFrame {
             edu.estado = modelo.getValueAt(ren, 5).toString();
 
         } else {
-            JOptionPane.showConfirmDialog(this, "Selrcciona un reglon de la tabla.");
+            JOptionPane.showConfirmDialog(this, "Selecciona un reglon de la tabla.");
         }
         return edu;
     }
