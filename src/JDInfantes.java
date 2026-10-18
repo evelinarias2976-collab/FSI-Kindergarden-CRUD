@@ -32,7 +32,7 @@ public class JDInfantes extends javax.swing.JDialog {
     public void obtenerInfante(Infante kid){
         
         try {
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:ss");
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
             
             TxCurp.setText(kid.curp);
             TxNombre.setText(kid.nombre);
